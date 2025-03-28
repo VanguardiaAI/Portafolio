@@ -1,0 +1,474 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-gradient: linear-gradient(45deg, #00C6FF, #0072FF);
+  --accent-gradient: linear-gradient(45deg, #FF69B4, #FF1493);
+}
+
+/* Tema oscuro (por defecto) */
+.dark {
+  --border: 240 3.7% 15.9%;
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+}
+
+/* Tema claro */
+.light {
+  --border: 215 25% 92%;
+  --background: 0 0% 100%;
+  --foreground: 225 15% 16%;
+  --muted: 215 20% 95%;
+  --muted-foreground: 215 12% 46%;
+
+  /* Colores especiales para tema claro */
+  --light-gradient-blue: rgba(224, 242, 254, 0.5);
+  --light-gradient-purple: rgba(243, 232, 255, 0.5);
+  --light-gradient-pink: rgba(252, 231, 243, 0.4);
+  --light-shadow: rgba(148, 163, 184, 0.12);
+  --light-highlight: rgba(255, 255, 255, 0.8);
+  --light-soft-blue: rgba(186, 230, 253, 0.4);
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  
+  body {
+    @apply min-h-screen transition-colors duration-300;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* Estilos para modo oscuro */
+  .dark body {
+    @apply bg-black text-white;
+  }
+
+  /* Estilos para modo claro con gradientes mejorados */
+  .light body {
+    @apply text-gray-900;
+    background: linear-gradient(
+      135deg, 
+      rgba(248, 250, 252, 1) 0%, 
+      rgba(241, 245, 249, 0.7) 20%, 
+      rgba(226, 232, 240, 0.4) 50%, 
+      rgba(242, 238, 255, 0.4) 70%, 
+      rgba(248, 250, 252, 0.95) 100%
+    );
+    position: relative;
+  }
+  
+  /* Efecto de difuminado mejorado para modo claro */
+  .light body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 15% 20%, var(--light-gradient-blue) 0%, rgba(255,255,255,0) 50%),
+      radial-gradient(circle at 85% 30%, var(--light-gradient-purple) 0%, rgba(255,255,255,0) 40%),
+      radial-gradient(circle at 75% 85%, var(--light-gradient-pink) 0%, rgba(255,255,255,0) 45%),
+      radial-gradient(circle at 25% 70%, var(--light-soft-blue) 0%, rgba(255,255,255,0) 40%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Mejora para la legibilidad de texto en modo claro */
+  .light h1 {
+    color: #1a202c; /* Un gris muy oscuro para los títulos principales */
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  }
+
+  .light h2, .light h3 {
+    color: #2d3748; /* Un gris oscuro para los subtítulos */
+  }
+
+  .light p {
+    color: #4a5568; /* Un gris medio para el texto de párrafos */
+  }
+
+  .light strong {
+    color: #1a202c;
+    font-weight: 600;
+  }
+
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 71.4% 4.1%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Componentes específicos para tema claro */
+  .light .glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 
+      0 4px 16px var(--light-shadow),
+      inset 0 1px 1px var(--light-highlight);
+  }
+  
+  .light .soft-shadow {
+    box-shadow: 
+      0 8px 24px rgba(148, 163, 184, 0.1),
+      0 2px 4px rgba(148, 163, 184, 0.08);
+  }
+  
+  .light .hover-card {
+    transition: all 0.3s ease;
+  }
+  
+  .light .hover-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 12px 28px rgba(148, 163, 184, 0.14),
+      0 4px 8px rgba(148, 163, 184, 0.12);
+  }
+  
+  /* Botones especiales para tema claro */
+  .light .neo-button {
+    background: linear-gradient(to bottom, #ffffff, #f3f4f6);
+    border: 1px solid rgba(203, 213, 225, 0.5);
+    box-shadow: 
+      0 2px 5px rgba(148, 163, 184, 0.08),
+      inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  }
+  
+  .light .neo-button:hover {
+    background: linear-gradient(to bottom, #f9fafb, #f1f5f9);
+    box-shadow: 
+      0 3px 7px rgba(148, 163, 184, 0.12),
+      inset 0 1px 1px rgba(255, 255, 255, 1);
+  }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent;
+  }
+
+  .accent-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light;
+  }
+  
+  /* Utilidades para tema claro */
+  .light .subtle-border {
+    border: 1px solid rgba(226, 232, 240, 0.7);
+  }
+  
+  .light .glass-effect {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+  
+  .light .gradient-border {
+    position: relative;
+  }
+  
+  .light .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      to right, 
+      rgba(125, 211, 252, 0.5), 
+      rgba(168, 85, 247, 0.4), 
+      rgba(249, 168, 212, 0.4)
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.25s, transform 0.2s, box-shadow 0.2s;
+}
+
+/* Estilos de botón para modo oscuro */
+.dark button {
+  background-color: #1a1a1a;
+}
+
+/* Estilos de botón para modo claro - mejorados */
+.light button {
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+  box-shadow: 
+    0 2px 4px rgba(148, 163, 184, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(203, 213, 225, 0.5);
+}
+
+.light button:hover {
+  background: linear-gradient(to bottom, #f9fafb, #f1f5f9);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 8px rgba(148, 163, 184, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 1);
+}
+
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+canvas {
+  @apply w-full h-full !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Estilos mejorados para el tema claro */
+.gradient-background-light {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 247, 255, 0.95)),
+              radial-gradient(circle at top right, rgba(141, 171, 255, 0.25), transparent 50%),
+              radial-gradient(circle at bottom left, rgba(255, 165, 220, 0.25), transparent 50%);
+  background-attachment: fixed;
+}
+
+.gradient-section-light {
+  background: linear-gradient(to bottom, rgba(250, 253, 255, 0.95), rgba(245, 248, 255, 0.85));
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 80, 0.08);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(60, 60, 150, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.soft-shadow {
+  box-shadow: 
+    0 10px 30px -10px rgba(140, 170, 255, 0.15),
+    0 5px 10px -5px rgba(140, 170, 255, 0.1);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 100, 0.07);
+}
+
+.gradient-border {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.8), rgba(240, 245, 255, 0.8));
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  top: -1px; right: -1px; bottom: -1px; left: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(100, 160, 255, 0.5), rgba(200, 130, 255, 0.3), rgba(255, 180, 220, 0.3));
+}
+
+.hover-card {
+  transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 15px 40px -10px rgba(140, 170, 255, 0.2),
+    0 8px 20px -8px rgba(140, 170, 255, 0.15);
+}
+
+/* Estilos para la navegación en tema claro */
+.nav-glass-effect {
+  box-shadow: 0 5px 20px -5px rgba(0, 0, 30, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(to right, rgba(168, 85, 247, 0.1), rgba(139, 92, 246, 0.1));
+  backdrop-filter: blur(10px);
+}
+
+.nav-pill-light {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(231, 240, 255, 0.7);
+  box-shadow: 
+    0 8px 16px -4px rgba(139, 92, 246, 0.15),
+    0 4px 8px -4px rgba(139, 92, 246, 0.1);
+}
+
+.nav-item-highlight {
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.2));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.theme-toggle-button {
+  background: rgba(255, 255, 255, 0.6);
+  color: #7c3aed;
+  border: 1px solid rgba(231, 240, 255, 0.7);
+  box-shadow: 0 4px 10px -2px rgba(139, 92, 246, 0.15);
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-button:hover {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 6px 14px -4px rgba(139, 92, 246, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Estilos para la navegación en tema oscuro */
+.dark .nav-glass-effect {
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.dark .nav-pill-light {
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 
+    0 8px 16px -4px rgba(139, 92, 246, 0.15),
+    0 4px 8px -4px rgba(139, 92, 246, 0.1);
+}
+
+.dark .nav-item-highlight {
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.2), rgba(168, 85, 247, 0.3));
+  box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.3);
+}
+
+.dark .theme-toggle-button {
+  background: rgba(17, 24, 39, 0.6);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 4px 10px -2px rgba(139, 92, 246, 0.15);
+}
+
+.dark .theme-toggle-button:hover {
+  background: rgba(17, 24, 39, 0.8);
+  box-shadow: 0 6px 14px -4px rgba(139, 92, 246, 0.25);
+}
+
+/* Estilos para botones */
+.neo-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.neo-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  z-index: 1;
+}
+
+/* Efectos sutiles para secciones de experiencia */
+.timeline-card-light {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  border: 1px solid rgba(235, 245, 255, 0.7);
+  box-shadow: 
+    0 10px 25px -5px rgba(100, 150, 255, 0.1),
+    0 5px 10px -5px rgba(100, 150, 255, 0.05);
+  overflow: hidden;
+  position: relative;
+}
+
+.timeline-card-light::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle at top right, rgba(100, 150, 255, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
