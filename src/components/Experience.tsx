@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { Building2, Briefcase } from "lucide-react";
 import { useRef } from "react";
 import { useTheme } from "../lib/ThemeContext";
