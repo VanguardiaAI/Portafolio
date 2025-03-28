@@ -141,92 +141,94 @@ const HeroParallaxWithProfile = ({
   );
 
   return (
-    <div
-      ref={ref}
-      className="h-[300vh] py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
-    >
-      <HeaderWithProfile profileImage={profileImageUrl} theme={theme} />
-      <motion.div
-        style={{
-          rotateX,
-          rotateZ,
-          translateY,
-          opacity,
-        }}
-        className="mt-[-100px]"
+    <div className="relative">
+      <HeaderWithProfile profileImage={profileImage} theme={theme} />
+      <div
+        ref={ref}
+        className="h-[300vh] py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
       >
-        {/* Vista para desktop (pantallas medianas y grandes) */}
-        <div className="hidden md:block">
-          <motion.div className="flex flex-row-reverse justify-start pl-20 space-x-reverse space-x-12 mb-32 overflow-visible">
-            {firstRow.map((product) => (
-              <ProductCard
-                product={product}
-                translate={translateX}
-                key={product.title}
-                theme={theme}
-              />
-            ))}
-          </motion.div>
-          <motion.div className="flex flex-row justify-start space-x-12 mb-20 overflow-visible -mr-96">
-            {secondRow.map((product) => (
-              <ProductCard
-                product={product}
-                translate={translateXReverse}
-                key={product.title}
-                theme={theme}
-              />
-            ))}
-          </motion.div>
-        </div>
-        
-        {/* Vista para móvil (pantallas pequeñas) */}
-        <div className="md:hidden mt-[-80px]">
-          <motion.div className="flex flex-row-reverse justify-start pl-8 space-x-reverse space-x-6 mb-16 overflow-visible">
-            {firstRowMobile.map((product) => (
-              <ProductCard
-                product={product}
-                translate={translateXMobile}
-                key={product.title}
-                isMobile={true}
-                theme={theme}
-              />
-            ))}
-          </motion.div>
-          <motion.div className="flex flex-row justify-start space-x-6 mb-20 overflow-visible -mr-32">
-            {secondRowMobile.map((product) => (
-              <ProductCard
-                product={product}
-                translate={translateXReverseMobile}
-                key={product.title}
-                isMobile={true}
-                theme={theme}
-              />
-            ))}
-          </motion.div>
-          <motion.div className="flex flex-row-reverse justify-start pl-8 space-x-reverse space-x-6 mb-20 overflow-visible">
-            {thirdRowMobile.map((product) => (
-              <ProductCard
-                product={product}
-                translate={translateXMobile}
-                key={product.title}
-                isMobile={true}
-                theme={theme}
-              />
-            ))}
-          </motion.div>
-          <motion.div className="flex flex-row justify-start space-x-6 mb-20 overflow-visible -mr-32">
-            {fourthRowMobile.map((product) => (
-              <ProductCard
-                product={product}
-                translate={translateXReverseMobile}
-                key={product.title}
-                isMobile={true}
-                theme={theme}
-              />
-            ))}
-          </motion.div>
-        </div>
-      </motion.div>
+        <motion.div
+          style={{
+            rotateX,
+            rotateZ,
+            translateY,
+            opacity,
+          }}
+          className="mt-[-100px]"
+        >
+          {/* Vista para desktop (pantallas medianas y grandes) */}
+          <div className="hidden md:block">
+            <motion.div className="flex flex-row-reverse justify-start pl-20 space-x-reverse space-x-12 mb-32 overflow-visible">
+              {firstRow.map((product) => (
+                <ProductCard
+                  product={product}
+                  translate={translateX}
+                  key={product.title}
+                  theme={theme}
+                />
+              ))}
+            </motion.div>
+            <motion.div className="flex flex-row justify-start space-x-12 mb-20 overflow-visible -mr-96">
+              {secondRow.map((product) => (
+                <ProductCard
+                  product={product}
+                  translate={translateXReverse}
+                  key={product.title}
+                  theme={theme}
+                />
+              ))}
+            </motion.div>
+          </div>
+          
+          {/* Vista para móvil (pantallas pequeñas) */}
+          <div className="md:hidden mt-[-80px]">
+            <motion.div className="flex flex-row-reverse justify-start pl-8 space-x-reverse space-x-6 mb-16 overflow-visible">
+              {firstRowMobile.map((product) => (
+                <ProductCard
+                  product={product}
+                  translate={translateXMobile}
+                  key={product.title}
+                  isMobile={true}
+                  theme={theme}
+                />
+              ))}
+            </motion.div>
+            <motion.div className="flex flex-row justify-start space-x-6 mb-20 overflow-visible -mr-32">
+              {secondRowMobile.map((product) => (
+                <ProductCard
+                  product={product}
+                  translate={translateXReverseMobile}
+                  key={product.title}
+                  isMobile={true}
+                  theme={theme}
+                />
+              ))}
+            </motion.div>
+            <motion.div className="flex flex-row-reverse justify-start pl-8 space-x-reverse space-x-6 mb-20 overflow-visible">
+              {thirdRowMobile.map((product) => (
+                <ProductCard
+                  product={product}
+                  translate={translateXMobile}
+                  key={product.title}
+                  isMobile={true}
+                  theme={theme}
+                />
+              ))}
+            </motion.div>
+            <motion.div className="flex flex-row justify-start space-x-6 mb-20 overflow-visible -mr-32">
+              {fourthRowMobile.map((product) => (
+                <ProductCard
+                  product={product}
+                  translate={translateXReverseMobile}
+                  key={product.title}
+                  isMobile={true}
+                  theme={theme}
+                />
+              ))}
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };
