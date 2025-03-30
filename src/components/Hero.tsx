@@ -148,7 +148,7 @@ const HeroParallaxWithProfile = ({
   return (
     <div
       ref={ref}
-      className="h-[230vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[230vh] md:h-[230vh] h-[300vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <HeaderWithProfile profileImage={profileImage} theme={theme} language={language} />
       <motion.div
@@ -185,8 +185,8 @@ const HeroParallaxWithProfile = ({
         </div>
         
         {/* Vista para móvil (pantallas pequeñas) */}
-        <div className="md:hidden">
-          <motion.div className="flex flex-row-reverse justify-start space-x-reverse space-x-10 mb-16 overflow-visible">
+        <div className="md:hidden space-y-20">
+          <motion.div className="flex flex-row-reverse justify-start space-x-reverse space-x-10 overflow-visible">
             {firstRowMobile.map((product) => (
               <ProductCard
                 product={product}
@@ -197,7 +197,7 @@ const HeroParallaxWithProfile = ({
               />
             ))}
           </motion.div>
-          <motion.div className="flex flex-row justify-start space-x-10 mb-16 overflow-visible">
+          <motion.div className="flex flex-row justify-start space-x-10 overflow-visible">
             {secondRowMobile.map((product) => (
               <ProductCard
                 product={product}
@@ -208,7 +208,7 @@ const HeroParallaxWithProfile = ({
               />
             ))}
           </motion.div>
-          <motion.div className="flex flex-row-reverse justify-start space-x-reverse space-x-10 mb-16 overflow-visible">
+          <motion.div className="flex flex-row-reverse justify-start space-x-reverse space-x-10 overflow-visible">
             {thirdRowMobile.map((product) => (
               <ProductCard
                 product={product}
@@ -219,7 +219,7 @@ const HeroParallaxWithProfile = ({
               />
             ))}
           </motion.div>
-          <motion.div className="flex flex-row justify-start space-x-10 mb-16 overflow-visible">
+          <motion.div className="flex flex-row justify-start space-x-10 overflow-visible">
             {fourthRowMobile.map((product) => (
               <ProductCard
                 product={product}
