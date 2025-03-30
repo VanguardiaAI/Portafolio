@@ -148,7 +148,7 @@ const HeroParallaxWithProfile = ({
   return (
     <div
       ref={ref}
-      className="h-[230vh] md:h-[230vh] h-[300vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[230vh] md:h-[200vh] h-[230vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <HeaderWithProfile profileImage={profileImage} theme={theme} language={language} />
       <motion.div
