@@ -7,13 +7,12 @@ import { Experience } from "./components/Experience";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { ThemeProvider, useTheme } from "./lib/ThemeContext";
-import { LanguageProvider, useLanguage } from "./lib/LanguageContext";
+import { LanguageProvider } from "./lib/LanguageContext";
 import ScrollToTopButton from "./components/ui/ScrollToTopButton";
 
 // Componente interno que usa el hook useTheme
 function AppContent() {
   const { theme } = useTheme();
-  useLanguage();
   
   return (
     <div className={`min-h-screen w-full overflow-x-hidden ${theme === 'dark' ? 'bg-black' : 'gradient-background-light'}`}>
@@ -35,7 +34,6 @@ function AppContent() {
 }
 
 function App() {
-  useLanguage();
   return (
     <ThemeProvider>
       <LanguageProvider>
