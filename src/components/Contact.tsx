@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, Github, Twitter } from "lucide-react";
 import { useTheme } from "../lib/ThemeContext";
 import { useState } from "react";
 
