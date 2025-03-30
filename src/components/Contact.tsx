@@ -3,10 +3,14 @@
 import { motion } from "framer-motion";
 import { Mail, Github, Twitter } from "lucide-react";
 import { useTheme } from "../lib/ThemeContext";
+import { useLanguage } from "../lib/LanguageContext";
+import { translations } from "../lib/translations";
 import { useState } from "react";
 
 export function Contact() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [formStatus, setFormStatus] = useState({ message: '', isError: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -58,7 +62,7 @@ export function Contact() {
       if (response.ok && data.success) {
         // Mostrar mensaje de éxito
         setFormStatus({ 
-          message: '¡Mensaje enviado correctamente!', 
+          message: t.contact.successMessage, 
           isError: false 
         });
         
@@ -67,14 +71,14 @@ export function Contact() {
       } else {
         // Mostrar mensaje de error
         setFormStatus({ 
-          message: data.message || 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.', 
+          message: data.message || t.contact.errorMessage, 
           isError: true 
         });
       }
     } catch (error) {
       console.error('Error:', error);
       setFormStatus({ 
-        message: 'Error de conexión. Por favor, inténtalo de nuevo más tarde.', 
+        message: t.contact.connectionError, 
         isError: true 
       });
     } finally {
@@ -101,10 +105,10 @@ export function Contact() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            Contacto
+            {t.contact.title}
           </h2>
           <p className={`text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} max-w-3xl mx-auto`}>
-            ¿Buscas un desarrollador Full Stack con experiencia en IA? ¡Hablemos sobre cómo puedo ayudarte a convertir tus ideas en proyectos exitosos!
+            {t.contact.subtitle}
           </p>
         </motion.div>
 
@@ -121,7 +125,7 @@ export function Contact() {
             }`}
           >
             <h3 className={`text-2xl font-semibold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              Redes Sociales
+              {t.contact.socialTitle}
             </h3>
             <div className="grid grid-cols-2 gap-4">
               {socialLinks.map((link) => (
@@ -155,14 +159,14 @@ export function Contact() {
             }`}
           >
             <h3 className={`text-2xl font-semibold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              Envíame un Mensaje
+              {t.contact.messageTitle}
             </h3>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <input
                   type="text"
                   name="name"
-                  placeholder="Nombre"
+                  placeholder={t.contact.formPlaceholders.name}
                   required
                   className={`w-full border rounded-xl p-4 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors ${
                     theme === 'dark'
@@ -175,7 +179,7 @@ export function Contact() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="Email"
+                  placeholder={t.contact.formPlaceholders.email}
                   required
                   className={`w-full border rounded-xl p-4 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors ${
                     theme === 'dark'
@@ -187,7 +191,7 @@ export function Contact() {
               <div>
                 <textarea
                   name="message"
-                  placeholder="Mensaje"
+                  placeholder={t.contact.formPlaceholders.message}
                   rows={4}
                   required
                   className={`w-full border rounded-xl p-4 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors ${
@@ -203,7 +207,7 @@ export function Contact() {
                 className="w-full font-semibold py-4 px-8 rounded-xl hover:opacity-90 transition-all text-white !bg-purple-600 hover:!bg-purple-700 hover:translate-y-[-2px] hover:shadow-lg [background-image:none] important-purple disabled:opacity-70 disabled:cursor-not-allowed"
                 style={{ backgroundColor: '#9333ea', backgroundImage: 'none' }}
               >
-                {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
+                {isSubmitting ? t.contact.sending : t.contact.sendButton}
               </button>
               {formStatus.message && (
                 <div className={`mt-4 p-3 rounded-lg ${formStatus.isError ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>

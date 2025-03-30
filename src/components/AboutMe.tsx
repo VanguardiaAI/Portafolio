@@ -3,32 +3,48 @@
 import { motion } from "framer-motion";
 import { Code2, Brain, Rocket, Bot } from "lucide-react";
 import { useTheme } from "../lib/ThemeContext";
+import { useLanguage } from "../lib/LanguageContext";
+import { translations } from "../lib/translations";
 
 export function AboutMe() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   
-  const skills = [
+  // Habilidades con keys originales para las traducciones
+  const skillsData = [
     {
       icon: <Code2 className="h-6 w-6" />,
-      title: "Desarrollo Frontend",
+      originalTitle: "Desarrollo Frontend",
       description: "React, TypeScript, HTML, CSS, JavaScript",
     },
     {
       icon: <Brain className="h-6 w-6" />,
-      title: "Inteligencia Artificial",
+      originalTitle: "Inteligencia Artificial",
       description: "LLMs, Sistemas Multiagente, Automatización con IA",
     },
     {
       icon: <Rocket className="h-6 w-6" />,
-      title: "Desarrollo Backend",
+      originalTitle: "Desarrollo Backend",
       description: "Python, Flask, MongoDB, Supabase",
     },
     {
       icon: <Bot className="h-6 w-6" />,
-      title: "Desarrollo de Bots",
+      originalTitle: "Desarrollo de Bots",
       description: "Telegram, Discord, WhatsApp, Automatizaciones",
     },
   ];
+
+  // Habilidades traducidas
+  const skills = skillsData.map(skill => {
+    const translated = t.aboutMe.skills[skill.originalTitle];
+    return {
+      icon: skill.icon,
+      title: translated.title,
+      description: translated.description,
+      originalTitle: skill.originalTitle
+    };
+  });
 
   return (
     <section 
@@ -48,19 +64,17 @@ export function AboutMe() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            Sobre Mí
+            {t.aboutMe.title}
           </h2>
           <p className={`text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} max-w-3xl mx-auto`}>
-            Desarrollador Full Stack con 6 años de experiencia especializado en Python y React. 
-            Creador de sistemas innovadores desde La Guía Digital Automotriz hasta soluciones 
-            potenciadas por IA. Apasionado por crear aplicaciones que resuelvan problemas reales.
+            {t.aboutMe.description}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {skills.map((skill, index) => (
             <motion.div
-              key={skill.title}
+              key={skill.originalTitle}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}

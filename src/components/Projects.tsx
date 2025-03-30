@@ -1,51 +1,56 @@
 "use client";
 
-import { Box, Code, Cpu, Star, DollarSign, Globe, X, ExternalLink, ChevronLeft, ChevronRight, Maximize, Minimize } from "lucide-react";
+import { Box, Code, Cpu, Star, DollarSign, Globe, X, ExternalLink, ChevronLeft, ChevronRight, Maximize } from "lucide-react";
 import { GlowingEffect } from "./ui/glowing-effect";
 import { cn } from "../lib/utils";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../lib/ThemeContext";
+import { useLanguage } from "../lib/LanguageContext";
+import { translations } from "../lib/translations";
 
 // Estilos globales para ocultar scrollbar
 import "./scroll-hide.css";
 
 // Interfaz para las tecnologías
-interface Technology {
+export interface Technology {
   name: string;
   icon: string; // URL del logotipo
   color?: string; // Color asociado a la tecnología (opcional)
 }
 
 // Interfaz para el carrusel de imágenes
-interface ProjectImage {
+export interface ProjectImage {
   url: string;
   alt?: string;
 }
 
 // Tipo para los datos del proyecto
-interface ProjectData {
-  icon: React.ReactNode;
+export interface ProjectData {
+  originalTitle: string;
   title: string;
   description: string;
   area: string;
-  images: ProjectImage[]; // Array de imágenes del proyecto
+  icon: React.ReactNode;
+  images: ProjectImage[];
   link: string;
-  difficulty: number; // De 1 a 5
-  budget: number; // De 1 a 5
+  difficulty: number;
+  budget: number;
   isOnline: boolean;
-  technologies: Technology[]; // Lista de tecnologías usadas
+  technologies: Technology[];
 }
 
 export function Projects() {
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   
-  // Datos de los proyectos con URLs de imágenes e información adicional
-  const projectsData: ProjectData[] = [
+  // Datos originales de los proyectos con keys para las traducciones
+  const projectsDataOriginal = [
     {
       icon: <Cpu className="h-4 w-4" />,
-      title: "App de Recetas Mexicanas",
+      originalTitle: "App de Recetas Mexicanas",
       description: "Aplicación web inteligente que sugiere alternativas de ingredientes según la ubicación del usuario. Desarrollada con HTML, CSS, JavaScript, Flask y Supabase.",
       area: "md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]",
       images: [
@@ -96,7 +101,7 @@ export function Projects() {
     },
     {
       icon: <Code className="h-4 w-4" />,
-      title: "SaaS de Membresías VIP para Discord",
+      originalTitle: "SaaS de Membresías VIP para Discord",
       description: "Saas desarrollada con React + TypeScript, Flask y MongoDB para la gestión de membresías de pago en servidores de Discord.",
       area: "md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]",
       images: [
@@ -151,7 +156,7 @@ export function Projects() {
     },
     {
       icon: <Box className="h-4 w-4" />,
-      title: "CRM para Clínicas Estéticas con IA",
+      originalTitle: "CRM para Clínicas Estéticas con IA",
       description: "Sistema integral desarrollado con JavaScript, HTML, CSS, Python (Flask) y MongoDB. Optimiza la gestión de pacientes y procedimientos estéticos utilizando IA.",
       area: "md:[grid-area:2/1/3/13] xl:[grid-area:1/5/3/13]",
       images: [
@@ -216,6 +221,16 @@ export function Projects() {
     }
   ];
 
+  // Aplicar traducciones a los proyectos
+  const projectsData = projectsDataOriginal.map(project => {
+    const translation = t.projectsSection.projects[project.originalTitle];
+    return {
+      ...project,
+      title: translation.title,
+      description: translation.description
+    };
+  });
+
   const openModal = (project: ProjectData) => {
     setSelectedProject(project);
     document.body.style.overflow = 'hidden'; // Evitar scroll en el fondo
@@ -237,12 +252,12 @@ export function Projects() {
     >
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">
-          Ultímos Proyectos
+          {t.projectsSection.title}
         </h2>
         <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-2 lg:gap-6 xl:max-h-[34rem]">
           {projectsData.map((project) => (
             <GridItem
-              key={project.title}
+              key={project.originalTitle}
               project={project}
               onOpenModal={() => openModal(project)}
               theme={theme}
@@ -255,8 +270,9 @@ export function Projects() {
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal 
-            project={selectedProject} 
+            isOpen={true}
             onClose={closeModal}
+            project={selectedProject}
             theme={theme}
           />
         )}
@@ -458,7 +474,7 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
   // Si no hay imágenes, mostrar un placeholder
   if (images.length === 0) {
     return (
-      <div className="relative w-full h-36 md:h-48 bg-gray-800 flex items-center justify-center">
+      <div className="relative w-full h-36 md:h-72 lg:h-96 bg-gray-800 flex items-center justify-center">
         <span className="text-gray-400">No hay imágenes disponibles</span>
       </div>
     );
@@ -466,9 +482,9 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
 
   return (
     <>
-      <div className="relative w-full">
+      <div className="relative w-full h-full">
         {/* Carrusel principal */}
-        <div className="relative h-36 md:h-48 w-full overflow-hidden">
+        <div className="relative h-36 md:h-72 lg:h-96 w-full overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.img
               key={currentIndex}
@@ -487,17 +503,17 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
           <div className="absolute inset-0 flex items-center justify-between p-2 z-10">
             <button 
               onClick={prevImage}
-              className="p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+              className="p-1.5 md:p-2.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
               disabled={images.length <= 1}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
             </button>
             <button 
               onClick={nextImage}
-              className="p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+              className="p-1.5 md:p-2.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
               disabled={images.length <= 1}
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
             </button>
           </div>
           
@@ -512,9 +528,9 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
                     setCurrentIndex(idx);
                   }}
                   className={cn(
-                    "w-1.5 h-1.5 rounded-full transition-all",
+                    "w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all",
                     currentIndex === idx 
-                      ? "bg-white w-3" 
+                      ? "bg-white w-3 md:w-4" 
                       : "bg-white/40 hover:bg-white/60"
                   )}
                   aria-label={`Ver imagen ${idx + 1}`}
@@ -526,15 +542,15 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
           {/* Botón de expandir */}
           <button 
             onClick={toggleFullscreen}
-            className="absolute bottom-2 right-2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors z-10"
+            className="absolute top-2 right-2 p-1.5 md:p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors z-10"
           >
-            <Maximize className="h-4 w-4" />
+            <Maximize className="h-4 w-4 md:h-5 md:w-5" />
           </button>
         </div>
         
-        {/* Miniaturas de imágenes */}
+        {/* Miniaturas de imágenes - versión móvil */}
         {images.length > 1 && (
-          <div className="flex gap-1.5 mt-1.5 overflow-x-auto pb-1.5 hide-scrollbar">
+          <div className="flex gap-1.5 mt-1.5 overflow-x-auto pb-1.5 hide-scrollbar md:hidden">
             {images.map((image, idx) => (
               <motion.button
                 key={idx}
@@ -543,7 +559,36 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
                   setCurrentIndex(idx);
                 }}
                 className={cn(
-                  "relative min-w-12 h-12 md:min-w-14 md:h-14 rounded-md overflow-hidden border-2 transition-all",
+                  "relative min-w-12 h-12 rounded-md overflow-hidden border-2 transition-all",
+                  currentIndex === idx 
+                    ? "border-blue-500 opacity-100" 
+                    : "border-transparent opacity-70 hover:opacity-100"
+                )}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <img 
+                  src={image.url} 
+                  alt={image.alt || `Miniatura ${idx + 1}`} 
+                  className="w-full h-full object-cover"
+                />
+              </motion.button>
+            ))}
+          </div>
+        )}
+        
+        {/* Miniaturas de imágenes - versión desktop */}
+        {images.length > 1 && (
+          <div className="hidden md:flex justify-center gap-2 mt-2">
+            {images.map((image, idx) => (
+              <motion.button
+                key={idx}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(idx);
+                }}
+                className={cn(
+                  "relative w-16 h-16 lg:w-20 lg:h-20 rounded-md overflow-hidden border-2 transition-all",
                   currentIndex === idx 
                     ? "border-blue-500 opacity-100" 
                     : "border-transparent opacity-70 hover:opacity-100"
@@ -633,12 +678,16 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
                   ))}
                 </div>
                 
+                <div className="text-white text-sm">
+                  {currentIndex + 1} / {images.length}
+                </div>
+                
                 {/* Botón de cerrar */}
                 <button 
                   onClick={toggleFullscreen}
                   className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
                 >
-                  <Minimize className="h-5 w-5" />
+                  <X className="h-5 w-5" />
                 </button>
               </div>
             </motion.div>
@@ -650,190 +699,254 @@ const ImageCarousel = ({ images, title }: ImageCarouselProps) => {
 };
 
 // Componente del Modal de Proyecto
-interface ProjectModalProps {
-  project: ProjectData;
+export interface ProjectModalProps {
+  isOpen: boolean;
   onClose: () => void;
+  project: ProjectData;
   theme: 'dark' | 'light';
 }
 
-const ProjectModal = ({ project, onClose, theme }: ProjectModalProps) => {
-  // Renderizar estrellas de dificultad
-  const renderStars = (count: number, total: number = 5) => {
-    return Array(total).fill(0).map((_, i) => (
+export const ProjectModal = ({ 
+  isOpen, 
+  onClose, 
+  project, 
+  theme 
+}: ProjectModalProps) => {
+  const { language } = useLanguage();
+  const t = translations[language];
+
+  // Funciones para renderizar estrellas y presupuesto
+  const renderStars = (difficulty: number) => {
+    return Array.from({ length: 5 }).map((_, i) => (
       <Star 
         key={i} 
-        className={cn(
-          "h-4 w-4", 
-          i < count ? "text-yellow-400 fill-yellow-400" : theme === 'dark' ? "text-gray-600" : "text-gray-400"
-        )} 
+        className={`h-4 w-4 ${
+          i < difficulty
+            ? 'text-yellow-400 fill-yellow-400'
+            : 'text-gray-400'
+        }`}
       />
     ));
   };
 
-  // Renderizar indicadores de presupuesto
-  const renderBudget = (count: number, total: number = 5) => {
-    return Array(total).fill(0).map((_, i) => (
+  const renderBudget = (budget: number) => {
+    return Array.from({ length: 5 }).map((_, i) => (
       <DollarSign 
         key={i} 
-        className={cn(
-          "h-4 w-4", 
-          i < count ? "text-green-500" : theme === 'dark' ? "text-gray-600" : "text-gray-400"
-        )} 
+        className={`h-4 w-4 ${
+          i < budget
+            ? 'text-green-500 fill-green-500'
+            : 'text-gray-400'
+        }`}
       />
     ));
   };
 
   return (
+    <AnimatePresence>
+      {isOpen && (
     <motion.div 
-      className={`fixed inset-0 z-50 flex items-center justify-center p-2 backdrop-blur-md overflow-y-auto ${
-        theme === 'dark' 
-          ? 'bg-black/80' 
-          : 'bg-white/60'
-      }`}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/70 backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
       onClick={onClose}
     >
       <motion.div 
-        className={`relative max-w-3xl w-full rounded-xl overflow-hidden border shadow-2xl my-4 max-h-[95vh] flex flex-col ${
-          theme === 'dark'
-            ? 'bg-gradient-to-br from-gray-900 to-black border-gray-800'
-            : 'glass-card gradient-border soft-shadow'
-        }`}
-        initial={{ scale: 0.9, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.9, y: 20 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className={`relative w-full max-w-5xl rounded-xl shadow-2xl overflow-hidden ${
+              theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+            }`}
+            initial={{ scale: 0.95, y: 20, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.95, y: 20, opacity: 0 }}
+            transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
-      >
-        {/* Carrusel de imágenes */}
-        <div className="relative">
-          <ImageCarousel images={project.images} title={project.title} />
-          
-          {/* Badge de estado online/offline */}
-          <div className="absolute top-2 right-2 z-20">
-            <span className={cn(
-              "flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium",
-              project.isOnline 
-                ? "bg-green-500/20 text-green-300 border border-green-500/30" 
-                : "bg-red-500/20 text-red-300 border border-red-500/30"
-            )}>
-              <Globe className="h-3 w-3" />
-              {project.isOnline ? "Online" : "Offline"}
-            </span>
-          </div>
-          
-          {/* Botón de cerrar */}
+          >
+            {/* Header con título y botón de cerrar */}
+            <div className={`flex items-center justify-between p-4 ${
+              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+            }`}>
+              <h2 className={`text-lg font-semibold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>
+                {t.projectsSection.detailsTitle}
+              </h2>
           <button 
             onClick={onClose}
-            className="absolute top-2 left-2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors z-20"
-          >
-            <X className="h-4 w-4" />
+                className={`p-1.5 rounded-full ${
+                  theme === 'dark'
+                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-600'
+                } transition-colors`}
+              >
+                <X className="h-5 w-5" />
           </button>
         </div>
         
-        {/* Contenedor scrollable para el contenido */}
-        <div className="overflow-y-auto flex-1">
-          {/* Contenido del modal */}
-          <div className="p-4">
-            {/* Encabezado con icono y título */}
-            <div className="flex items-center gap-2 mb-3">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
-                {project.icon}
-              </div>
-              <h2 className={`text-xl md:text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                {project.title}
-              </h2>
+            {/* Contenido principal */}
+            <div className="flex flex-col md:flex-row max-h-[calc(90vh-6rem)]">
+              {/* Parte izquierda: Imágenes y detalles en desktop */}
+              <div className="w-full md:w-2/3 flex flex-col">
+                {/* Área de imagen - ocupa más espacio en pantallas grandes */}
+                <div className="w-full h-full flex-1">
+                  <ImageCarousel
+                    images={project.images}
+                    title={project.title}
+                  />
             </div>
             
-            {/* Métricas (dificultad y presupuesto) */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              <div className={`rounded-lg p-2.5 border ${
+                {/* Contenido adicional para pantallas grandes */}
+                <div className={`hidden md:block p-6 ${
                 theme === 'dark'
-                  ? 'bg-gray-800/50 border-gray-700/50'
-                  : 'glass-effect'
-              }`}>
-                <h3 className={`text-xs mb-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Dificultad
-                </h3>
-                <div className="flex items-center gap-1">
-                  {renderStars(project.difficulty)}
-                </div>
-              </div>
-              <div className={`rounded-lg p-2.5 border ${
+                    ? 'bg-gradient-to-t from-gray-900/90 to-gray-800/50' 
+                    : 'bg-gradient-to-t from-white/90 to-gray-100/50'
+                }`}>
+                  <div className="flex items-center mb-4">
+                    <div className={`p-2 rounded-lg mr-3 ${
                 theme === 'dark'
-                  ? 'bg-gray-800/50 border-gray-700/50'
-                  : 'glass-effect'
-              }`}>
-                <h3 className={`text-xs mb-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Presupuesto
-                </h3>
-                <div className="flex items-center gap-1">
-                  {renderBudget(project.budget)}
+                        ? 'bg-blue-500/20' 
+                        : 'bg-blue-500/10'
+                    }`}>
+                      {project.icon}
                 </div>
-              </div>
+                    <h2 className={`text-2xl font-bold ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {project.title}
+                    </h2>
             </div>
             
-            {/* Descripción */}
-            <div className="mb-4">
-              <h3 className={`text-sm font-medium mb-1.5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>
-                Descripción
-              </h3>
-              <p className={`text-sm leading-relaxed ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <div className="mb-5">
+                    <p className={`text-base ${
+                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
                 {project.description}
               </p>
             </div>
             
-            {/* Tecnologías usadas */}
-            <motion.div 
-              className="mb-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-            >
-              <h3 className={`text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>
-                Tecnologías
-              </h3>
-              <div className={`rounded-lg p-3 border ${
-                theme === 'dark'
-                  ? 'bg-gray-800/30 border-gray-700/30'
-                  : 'glass-effect'
-              }`}>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
-                  {project.technologies.map((tech, index) => (
-                    <TechIcon key={tech.name} tech={tech} index={index} theme={theme} />
-                  ))}
+                  <a
+                    href={project.link}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg ${
+                      theme === 'dark'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700'
+                        : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg'
+                    } transition-all`}
+                  >
+                    <span>{t.projectsSection.visitButton}</span>
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
                 </div>
               </div>
-            </motion.div>
             
-            {/* Botón de acceso */}
-            <div className="flex justify-center mt-4">
-              <motion.a 
+              {/* Detalles del proyecto */}
+              <div className={`w-full md:w-1/3 h-[calc(60vh-4rem)] md:h-auto ${
+                theme === 'dark' ? 'bg-gray-900/80' : 'bg-gray-50/80'
+              } overflow-y-auto border-t md:border-t-0 md:border-l ${
+                theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
+              }`}>
+                <div className="p-5 md:p-6 h-full flex flex-col">
+                  {/* Solo mostrar esta sección en móvil, en desktop ya se muestra arriba */}
+                  <div className="mb-5 md:hidden">
+                    <div className="flex items-center mb-3">
+                      <div className={`p-2 rounded-lg mr-3 ${
+                theme === 'dark'
+                          ? 'bg-blue-500/20' 
+                          : 'bg-blue-500/10'
+              }`}>
+                        {project.icon}
+                </div>
+                      <h3 className={`text-xl font-bold ${
+                        theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        {project.title}
+                      </h3>
+              </div>
+                    <p className={`text-sm ${
+                      theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
+                      {project.description}
+                    </p>
+                  
+                    <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white text-sm font-medium ${
-                  theme === 'dark'
-                    ? 'shadow-lg'
-                    : 'shadow-lg hover:shadow-blue-500/25 hover:translate-y-[-2px]'
-                }`}
-                whileHover={{ 
-                  scale: 1.05, 
-                  boxShadow: theme === 'dark' 
-                    ? "0 10px 25px -5px rgba(59, 130, 246, 0.5)" 
-                    : "0 12px 28px -5px rgba(59, 130, 246, 0.6)" 
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
+                      className="inline-flex items-center gap-2 px-4 py-2 mt-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg transition-all"
+                    >
+                      <span>{t.projectsSection.visitButton}</span>
                 <ExternalLink className="h-4 w-4" />
-                Visitar proyecto
-              </motion.a>
+                    </a>
+                  </div>
+
+                  <div className="mb-6">
+                    <h4 className={`text-lg font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {t.projectsSection.techTitle}
+                    </h4>
+                    <div className="grid grid-cols-3 gap-3">
+                    {project.technologies.map((tech, index) => (
+                        <TechIcon 
+                          key={tech.name} 
+                          tech={tech} 
+                          index={index} 
+                          theme={theme} 
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-auto">
+                    <h4 className={`text-lg font-semibold mb-3 ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {t.projectsSection.infoTitle}
+                    </h4>
+                    <div className={`text-sm space-y-4 ${
+                      theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
+                      <div>
+                        <p className="mb-1 font-medium">{t.projectsSection.difficultyLabel}</p>
+                        <div className="flex space-x-1">
+                          {renderStars(project.difficulty)}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="mb-1 font-medium">{t.projectsSection.budgetLabel}</p>
+                        <div className="flex space-x-1">
+                          {renderBudget(project.budget)}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="mb-1 font-medium">{t.projectsSection.statusLabel}</p>
+                        <div className="flex items-center space-x-2">
+                          <Globe className={`h-5 w-5 ${
+                            project.isOnline 
+                              ? 'text-green-500' 
+                              : 'text-gray-400'
+                          }`} />
+                          <span className={
+                            project.isOnline 
+                              ? 'text-green-500 font-medium' 
+                              : 'text-gray-400'
+                          }>
+                            {project.isOnline 
+                              ? t.projectsSection.onlineStatus 
+                              : t.projectsSection.offlineStatus}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             </div>
           </div>
         </div>
       </motion.div>
     </motion.div>
+      )}
+    </AnimatePresence>
   );
 }; 

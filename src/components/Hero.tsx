@@ -8,67 +8,71 @@ import {
   MotionValue,
 } from "framer-motion";
 import { useTheme } from "../lib/ThemeContext";
-
-const products = [
-  {
-    title: "Interfaces de usuario avanzadas",
-    link: "https://github.com/tuuser/telegram-bot",
-    thumbnail:
-      "https://i.imgur.com/FebaaCv.png",
-  },
-  {
-    title: "CRM para Clínicas Estéticas con IA",
-    link: "https://clinicas.tech",
-    thumbnail:
-    "https://i.imgur.com/QKIRkG7.png",
-  },
-  {
-    title: "Marketplace de productos",
-    link: "https://github.com/tuuser/trading-bot",
-    thumbnail:
-    "https://i.imgur.com/gafjnOV.png",
-  },
-  {
-    title: "CRM para Clínicas Estéticas",
-    link: "https://github.com/tuuser/estetica-crm",
-    thumbnail:
-    "https://i.imgur.com/fef8nd5.png",
-  },
-  {
-    title: "Sistemas avanzados de gestión de citas y clientes",
-    link: "https://github.com/tuuser/discord-membership",
-    thumbnail:
-    "https://i.imgur.com/A2Y29JP.png",
-  },
-  {
-    title: "Landing pages que convierten",
-    link: "https://proleaker.pro",
-    thumbnail:
-      "https://i.imgur.com/HubxCdK.png",
-  },
-  {
-    title: "La Guía Digital Automotriz",
-    link: "https://www.laguiadigital.mx",
-    thumbnail:
-      "https://i.imgur.com/G8PQ4ud.png",
-  },
-  {
-    title: "Sistema de gestión de citas con IA",
-    link: "https://github.com/tuuser/discord-bot",
-    thumbnail:
-      "https://i.imgur.com/S7RQ0zE.png",
-  }
-];
+import { useLanguage } from "../lib/LanguageContext";
+import { translations } from "../lib/translations";
 
 // URL de la imagen de perfil - reemplaza con tu URL real
 const profileImageUrl = "https://i.imgur.com/qyiJGW2.jpeg";
 
 const Hero = () => {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  
+  // Productos con títulos traducibles
+  const products = [
+    {
+      originalTitle: "Interfaces de usuario avanzadas",
+      link: "https://github.com/tuuser/telegram-bot",
+      thumbnail: "https://i.imgur.com/FebaaCv.png",
+    },
+    {
+      originalTitle: "CRM para Clínicas Estéticas con IA",
+      link: "https://clinicas.tech",
+      thumbnail: "https://i.imgur.com/QKIRkG7.png",
+    },
+    {
+      originalTitle: "Marketplace de productos",
+      link: "https://github.com/tuuser/trading-bot",
+      thumbnail: "https://i.imgur.com/gafjnOV.png",
+    },
+    {
+      originalTitle: "CRM para Clínicas Estéticas",
+      link: "https://github.com/tuuser/estetica-crm",
+      thumbnail: "https://i.imgur.com/fef8nd5.png",
+    },
+    {
+      originalTitle: "Sistemas avanzados de gestión de citas y clientes",
+      link: "https://github.com/tuuser/discord-membership",
+      thumbnail: "https://i.imgur.com/A2Y29JP.png",
+    },
+    {
+      originalTitle: "Landing pages que convierten",
+      link: "https://proleaker.pro",
+      thumbnail: "https://i.imgur.com/HubxCdK.png",
+    },
+    {
+      originalTitle: "La Guía Digital Automotriz",
+      link: "https://www.laguiadigital.mx",
+      thumbnail: "https://i.imgur.com/G8PQ4ud.png",
+    },
+    {
+      originalTitle: "Sistema de gestión de citas con IA",
+      link: "https://github.com/tuuser/discord-bot",
+      thumbnail: "https://i.imgur.com/S7RQ0zE.png",
+    }
+  ];
+  
+  // Transformar los productos con títulos traducidos
+  const translatedProducts = products.map(product => ({
+    title: translations[language].projects[product.originalTitle]?.title || product.originalTitle,
+    link: product.link,
+    thumbnail: product.thumbnail,
+    originalTitle: product.originalTitle
+  }));
   
   return (
     <div className="min-h-screen w-full" id="hero">
-      <HeroParallaxWithProfile products={products} profileImage={profileImageUrl} theme={theme} />
+      <HeroParallaxWithProfile products={translatedProducts} profileImage={profileImageUrl} theme={theme} language={language} />
     </div>
   );
 };
@@ -78,14 +82,17 @@ const HeroParallaxWithProfile = ({
   products,
   profileImage,
   theme,
+  language,
 }: {
   products: {
     title: string;
     link: string;
     thumbnail: string;
+    originalTitle: string;
   }[];
   profileImage: string;
   theme: 'dark' | 'light';
+  language: 'es' | 'en';
 }) => {
   // División para escritorio - 2 filas de 4
   const firstRow = products.slice(0, 4);
@@ -143,7 +150,7 @@ const HeroParallaxWithProfile = ({
       ref={ref}
       className="h-[230vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
-      <HeaderWithProfile profileImage={profileImage} theme={theme} />
+      <HeaderWithProfile profileImage={profileImage} theme={theme} language={language} />
       <motion.div
         style={{
           rotateX,
@@ -160,7 +167,7 @@ const HeroParallaxWithProfile = ({
               <ProductCard
                 product={product}
                 translate={translateX}
-                key={product.title}
+                key={product.originalTitle}
                 theme={theme}
               />
             ))}
@@ -170,7 +177,7 @@ const HeroParallaxWithProfile = ({
               <ProductCard
                 product={product}
                 translate={translateXReverse}
-                key={product.title}
+                key={product.originalTitle}
                 theme={theme}
               />
             ))}
@@ -184,7 +191,7 @@ const HeroParallaxWithProfile = ({
               <ProductCard
                 product={product}
                 translate={translateXMobile}
-                key={product.title}
+                key={product.originalTitle}
                 isMobile={true}
                 theme={theme}
               />
@@ -195,7 +202,7 @@ const HeroParallaxWithProfile = ({
               <ProductCard
                 product={product}
                 translate={translateXReverseMobile}
-                key={product.title}
+                key={product.originalTitle}
                 isMobile={true}
                 theme={theme}
               />
@@ -206,7 +213,7 @@ const HeroParallaxWithProfile = ({
               <ProductCard
                 product={product}
                 translate={translateXMobile}
-                key={product.title}
+                key={product.originalTitle}
                 isMobile={true}
                 theme={theme}
               />
@@ -217,7 +224,7 @@ const HeroParallaxWithProfile = ({
               <ProductCard
                 product={product}
                 translate={translateXReverseMobile}
-                key={product.title}
+                key={product.originalTitle}
                 isMobile={true}
                 theme={theme}
               />
@@ -230,20 +237,30 @@ const HeroParallaxWithProfile = ({
 };
 
 // Header modificado con imagen de perfil
-const HeaderWithProfile = ({ profileImage, theme }: { profileImage: string, theme: 'dark' | 'light' }) => {
+const HeaderWithProfile = ({ 
+  profileImage, 
+  theme, 
+  language 
+}: { 
+  profileImage: string, 
+  theme: 'dark' | 'light',
+  language: 'es' | 'en'
+}) => {
+  const t = translations[language];
+  
   return (
     <div className="max-w-7xl mx-auto px-4 w-full absolute top-20 left-0 right-0 z-10">
       <div className="flex flex-col md:flex-row items-center justify-between gap-10 py-20">
         <div className="w-full md:w-3/5 text-center md:text-left">
           <h1 className={`text-4xl md:text-7xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-            Desarrollador Full Stack <br /> & Especialista en IA
+            {t.hero.title}
           </h1>
           <p className={`max-w-2xl mx-auto md:mx-0 text-lg md:text-xl mt-8 ${
             theme === 'dark' 
               ? 'text-neutral-200' 
               : 'text-gray-800 font-medium'
           }`}>
-            6 años de experiencia creando soluciones digitales innovadoras. Especializado en Python, React y desarrollo de aplicaciones potenciadas con IA para crear productos de impacto real.
+            {t.hero.subtitle}
           </p>
         </div>
 
@@ -267,7 +284,7 @@ const HeaderWithProfile = ({ profileImage, theme }: { profileImage: string, them
             <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-b from-black/80 to-black/40' : 'bg-gradient-to-b from-white/80 to-white/40'} z-0 rounded-full`}></div>
             <img 
               src={profileImage} 
-              alt="Foto de perfil" 
+              alt={t.hero.profileAlt} 
               className="w-full h-full object-cover relative z-10"
             />
           </motion.div>
@@ -288,6 +305,7 @@ const ProductCard = ({
     title: string;
     link: string;
     thumbnail: string;
+    originalTitle: string;
   };
   translate: MotionValue<number>;
   isMobile?: boolean;
@@ -301,7 +319,7 @@ const ProductCard = ({
       whileHover={{
         y: -20,
       }}
-      key={product.title}
+      key={product.originalTitle}
       className={`group/product relative flex-shrink-0 ${
         isMobile ? "h-[250px] w-[20rem]" : "h-[450px] w-[35rem]"
       }`}

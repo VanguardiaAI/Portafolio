@@ -3,9 +3,13 @@
 import { motion } from "framer-motion";
 import { Github, Mail, Twitter } from "lucide-react";
 import { useTheme } from "../lib/ThemeContext";
+import { useLanguage } from "../lib/LanguageContext";
+import { translations } from "../lib/translations";
 
 export function Footer() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
@@ -81,10 +85,10 @@ export function Footer() {
             className={`text-center ${theme === 'light' ? 'gradient-border rounded-xl p-4 inline-block' : ''}`}
           >
             <p className={`text-sm mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              Especialista en desarrollo Full Stack y soluciones con IA
+              {t.footer.specialistText}
             </p>
             <p className={`text-sm ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`}>
-              © {currentYear} Portfolio Personal. Todos los derechos reservados.
+              {t.footer.rightsText.replace('{year}', currentYear.toString())}
             </p>
           </motion.div>
         </motion.div>

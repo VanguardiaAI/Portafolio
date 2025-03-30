@@ -4,9 +4,13 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { Building2, Briefcase } from "lucide-react";
 import { useRef } from "react";
 import { useTheme } from "../lib/ThemeContext";
+import { useLanguage } from "../lib/LanguageContext";
+import { translations } from "../lib/translations";
 
 export function Experience() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -20,29 +24,42 @@ export function Experience() {
     restDelta: 0.001
   });
 
-  const experiences = [
+  // Experiencias con keys originales para las traducciones
+  const experiencesData = [
     {
-      title: "Desarrollador Freelance",
+      originalTitle: "Desarrollador Freelance",
       company: "Proyectos con IA",
       period: "2023 - Presente",
       description:
         "Desarrollo de 3 proyectos clave: CRM para clínicas estéticas con IA, SaaS para gestión de membresías VIP en Discord y aplicación de recetas mexicanas con sugerencias basadas en ubicación.",
     },
     {
-      title: "Desarrollador de Bots",
+      originalTitle: "Desarrollador de Bots",
       company: "Proyecto Personal",
       period: "2022 - 2024",
       description:
         "Desarrollo y mejora continua de un bot de trading algorítmico para Telegram. Implementación de sistema de suscripción y actualizaciones periódicas para mejorar su rendimiento.",
     },
     {
-      title: "Fundador y Desarrollador",
+      originalTitle: "Fundador y Desarrollador",
       company: "La Guía Digital Automotriz",
       period: "2019 - 2022",
       description:
         "Creación y desarrollo de una aplicación móvil (www.laguiadigital.mx) para la guía de precios de vehículos usados, enfocada en revendedores. Desarrollada con React Native, HTML, CSS y JavaScript.",
     },
   ];
+
+  // Obtener experiencias traducidas
+  const experiences = experiencesData.map(exp => {
+    const translated = t.experience.jobs[exp.originalTitle];
+    return {
+      title: translated.title,
+      company: translated.company,
+      period: translated.period,
+      description: translated.description,
+      originalTitle: exp.originalTitle
+    };
+  });
 
   return (
     <section 
@@ -62,10 +79,10 @@ export function Experience() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            Experiencia
+            {t.experience.title}
           </h2>
           <p className={`text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} max-w-3xl mx-auto`}>
-            Mi trayectoria profesional en el desarrollo de software y creación de soluciones digitales innovadoras.
+            {t.experience.subtitle}
           </p>
         </motion.div>
 
@@ -88,7 +105,7 @@ export function Experience() {
 
           {experiences.map((exp, index) => (
             <motion.div
-              key={exp.title}
+              key={exp.originalTitle}
               initial={{ 
                 opacity: 0, 
                 x: index % 2 === 0 ? -50 : 50,
