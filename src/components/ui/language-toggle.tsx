@@ -2,6 +2,7 @@
 import { useLanguage } from "../../lib/LanguageContext";
 import { motion } from "framer-motion";
 import { useTheme } from "../../lib/ThemeContext";
+import { Toggle } from "./toggle";
 
 export const LanguageToggle = () => {
   const { language, setLanguage } = useLanguage();
@@ -11,26 +12,28 @@ export const LanguageToggle = () => {
     setLanguage(language === 'en' ? 'es' : 'en');
   };
   
-  const isDark = theme === 'dark';
-  
   return (
-    <div className="fixed top-5 right-20 z-50">
-      <motion.button
-        onClick={toggleLanguage}
-        className={`
-          rounded-full p-2 text-sm focus:outline-none 
-          ${isDark 
-            ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-            : 'bg-white hover:bg-gray-100 text-gray-800 shadow-md'}
-        `}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.05 }}
+      className="fixed top-4 right-20 z-50"
+    >
+      <Toggle
+        variant="outline"
+        className={`group size-10 rounded-full data-[state=on]:bg-transparent data-[state=on]:hover:bg-muted ${
+          theme === 'dark'
+            ? 'bg-white/10 hover:bg-white/20 text-white border-gray-700'
+            : 'bg-black/5 hover:bg-black/10 text-gray-800 border-gray-200 shadow-sm'
+        }`}
+        pressed={language === "es"}
+        onPressedChange={toggleLanguage}
+        aria-label={`Cambiar a ${language === "es" ? "inglés" : "español"}`}
       >
-        {language === 'es' ? 'EN' : 'ES'}
-      </motion.button>
-    </div>
+        <span className="text-sm font-medium">
+          {language === 'es' ? 'EN' : 'ES'}
+        </span>
+      </Toggle>
+    </motion.div>
   );
 }; 
