@@ -122,8 +122,8 @@ export function Experience() {
                   delay: index * 0.2 + 0.3
                 }}
                 viewport={{ once: true }}
-                className={`absolute top-0 ${
-                  index % 2 === 0 ? "right-0 md:-right-6" : "left-0 md:-left-6"
+                className={`absolute top-0 z-10 ${
+                  index % 2 === 0 ? "right-4 md:-right-6" : "left-4 md:-left-6"
                 } w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ${
                   theme === 'light' ? 'shadow-lg' : ''
                 }`}
@@ -138,7 +138,7 @@ export function Experience() {
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className={`rounded-2xl border transition-colors ml-16 md:ml-0 p-6 ${
+                className={`rounded-2xl border transition-colors ml-20 md:ml-0 p-6 ${
                   theme === 'dark'
                     ? 'bg-gradient-to-br from-gray-900 to-black border-gray-800 hover:border-gray-700'
                     : 'glass-card hover-card gradient-border'

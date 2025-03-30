@@ -1,4 +1,4 @@
-import NavHeader from "./components/ui/nav-header";
+import { ThemeToggle } from "./components/ui/theme-toggle";
 import Hero from "./components/Hero";
 import { Projects } from "./components/Projects";
 import { AboutMe } from "./components/AboutMe";
@@ -14,7 +14,7 @@ function AppContent() {
   
   return (
     <div className={`min-h-screen w-full overflow-x-hidden ${theme === 'dark' ? 'bg-black' : 'gradient-background-light'}`}>
-      <NavHeader />
+      <ThemeToggle />
       <ScrollToTopButton />
       
       <main>

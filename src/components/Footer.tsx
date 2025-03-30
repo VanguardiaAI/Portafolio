@@ -11,17 +11,17 @@ export function Footer() {
   const socialLinks = [
     {
       icon: Github,
-      href: "https://github.com/tuUsuario",
+      href: "https://github.com/VanguardiaAI",
       label: "GitHub",
     },
     {
       icon: Twitter,
-      href: "https://twitter.com/tuUsuario",
-      label: "Twitter",
+      href: "https://x.com/VanguardiaAI",
+      label: "X.com",
     },
     {
       icon: Mail,
-      href: "mailto:tu@email.com",
+      href: "mailto:contacto@vanguardiamx.tech",
       label: "Email",
     },
   ];

@@ -11,10 +11,10 @@ import { useTheme } from "../lib/ThemeContext";
 
 const products = [
   {
-    title: "La Guía Digital Automotriz",
-    link: "https://www.laguiadigital.mx",
+    title: "Interfaces de usuario avanzadas",
+    link: "https://github.com/tuuser/telegram-bot",
     thumbnail:
-      "https://i.imgur.com/G8PQ4ud.png",
+      "https://i.imgur.com/FebaaCv.png",
   },
   {
     title: "CRM para Clínicas Estéticas con IA",
@@ -47,10 +47,10 @@ const products = [
       "https://i.imgur.com/HubxCdK.png",
   },
   {
-    title: "Interfaces de usuario avanzadas",
-    link: "https://github.com/tuuser/telegram-bot",
+    title: "La Guía Digital Automotriz",
+    link: "https://www.laguiadigital.mx",
     thumbnail:
-      "https://i.imgur.com/FebaaCv.png",
+      "https://i.imgur.com/G8PQ4ud.png",
   },
   {
     title: "Sistema de gestión de citas con IA",
@@ -68,9 +68,7 @@ const Hero = () => {
   
   return (
     <div className="min-h-screen w-full" id="hero">
-      <div className="absolute top-0 left-0 w-full">
-        <HeroParallaxWithProfile products={products} profileImage={profileImageUrl} theme={theme} />
-      </div>
+      <HeroParallaxWithProfile products={products} profileImage={profileImageUrl} theme={theme} />
     </div>
   );
 };
@@ -108,19 +106,19 @@ const HeroParallaxWithProfile = ({
   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
 
   const translateX = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 600]),
+    useTransform(scrollYProgress, [0, 1], [0, 1000]),
     springConfig
   );
   const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -600]),
+    useTransform(scrollYProgress, [0, 1], [0, -1000]),
     springConfig
   );
   const translateXMobile = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 300]),
+    useTransform(scrollYProgress, [0, 1], [0, 500]),
     springConfig
   );
   const translateXReverseMobile = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -300]),
+    useTransform(scrollYProgress, [0, 1], [0, -500]),
     springConfig
   );
   const rotateX = useSpring(
@@ -136,99 +134,97 @@ const HeroParallaxWithProfile = ({
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-700, 300]),
+    useTransform(scrollYProgress, [0, 0.2], [-300, 500]),
     springConfig
   );
 
   return (
-    <div className="relative">
+    <div
+      ref={ref}
+      className="h-[230vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+    >
       <HeaderWithProfile profileImage={profileImage} theme={theme} />
-      <div
-        ref={ref}
-        className="h-[300vh] py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      <motion.div
+        style={{
+          rotateX,
+          rotateZ,
+          translateY,
+          opacity,
+        }}
+        className="mt-[180px]"
       >
-        <motion.div
-          style={{
-            rotateX,
-            rotateZ,
-            translateY,
-            opacity,
-          }}
-          className="mt-[-100px]"
-        >
-          {/* Vista para desktop (pantallas medianas y grandes) */}
-          <div className="hidden md:block">
-            <motion.div className="flex flex-row-reverse justify-start pl-20 space-x-reverse space-x-12 mb-32 overflow-visible">
-              {firstRow.map((product) => (
-                <ProductCard
-                  product={product}
-                  translate={translateX}
-                  key={product.title}
-                  theme={theme}
-                />
-              ))}
-            </motion.div>
-            <motion.div className="flex flex-row justify-start space-x-12 mb-20 overflow-visible -mr-96">
-              {secondRow.map((product) => (
-                <ProductCard
-                  product={product}
-                  translate={translateXReverse}
-                  key={product.title}
-                  theme={theme}
-                />
-              ))}
-            </motion.div>
-          </div>
-          
-          {/* Vista para móvil (pantallas pequeñas) */}
-          <div className="md:hidden mt-[-80px]">
-            <motion.div className="flex flex-row-reverse justify-start pl-8 space-x-reverse space-x-6 mb-16 overflow-visible">
-              {firstRowMobile.map((product) => (
-                <ProductCard
-                  product={product}
-                  translate={translateXMobile}
-                  key={product.title}
-                  isMobile={true}
-                  theme={theme}
-                />
-              ))}
-            </motion.div>
-            <motion.div className="flex flex-row justify-start space-x-6 mb-20 overflow-visible -mr-32">
-              {secondRowMobile.map((product) => (
-                <ProductCard
-                  product={product}
-                  translate={translateXReverseMobile}
-                  key={product.title}
-                  isMobile={true}
-                  theme={theme}
-                />
-              ))}
-            </motion.div>
-            <motion.div className="flex flex-row-reverse justify-start pl-8 space-x-reverse space-x-6 mb-20 overflow-visible">
-              {thirdRowMobile.map((product) => (
-                <ProductCard
-                  product={product}
-                  translate={translateXMobile}
-                  key={product.title}
-                  isMobile={true}
-                  theme={theme}
-                />
-              ))}
-            </motion.div>
-            <motion.div className="flex flex-row justify-start space-x-6 mb-20 overflow-visible -mr-32">
-              {fourthRowMobile.map((product) => (
-                <ProductCard
-                  product={product}
-                  translate={translateXReverseMobile}
-                  key={product.title}
-                  isMobile={true}
-                  theme={theme}
-                />
-              ))}
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
+        {/* Vista para desktop (pantallas medianas y grandes) */}
+        <div className="hidden md:block">
+          <motion.div className="flex flex-row-reverse justify-start space-x-reverse space-x-20 mb-32 overflow-visible">
+            {firstRow.map((product) => (
+              <ProductCard
+                product={product}
+                translate={translateX}
+                key={product.title}
+                theme={theme}
+              />
+            ))}
+          </motion.div>
+          <motion.div className="flex flex-row justify-start space-x-20 mb-20 overflow-visible">
+            {secondRow.map((product) => (
+              <ProductCard
+                product={product}
+                translate={translateXReverse}
+                key={product.title}
+                theme={theme}
+              />
+            ))}
+          </motion.div>
+        </div>
+        
+        {/* Vista para móvil (pantallas pequeñas) */}
+        <div className="md:hidden">
+          <motion.div className="flex flex-row-reverse justify-start space-x-reverse space-x-10 mb-16 overflow-visible">
+            {firstRowMobile.map((product) => (
+              <ProductCard
+                product={product}
+                translate={translateXMobile}
+                key={product.title}
+                isMobile={true}
+                theme={theme}
+              />
+            ))}
+          </motion.div>
+          <motion.div className="flex flex-row justify-start space-x-10 mb-16 overflow-visible">
+            {secondRowMobile.map((product) => (
+              <ProductCard
+                product={product}
+                translate={translateXReverseMobile}
+                key={product.title}
+                isMobile={true}
+                theme={theme}
+              />
+            ))}
+          </motion.div>
+          <motion.div className="flex flex-row-reverse justify-start space-x-reverse space-x-10 mb-16 overflow-visible">
+            {thirdRowMobile.map((product) => (
+              <ProductCard
+                product={product}
+                translate={translateXMobile}
+                key={product.title}
+                isMobile={true}
+                theme={theme}
+              />
+            ))}
+          </motion.div>
+          <motion.div className="flex flex-row justify-start space-x-10 mb-16 overflow-visible">
+            {fourthRowMobile.map((product) => (
+              <ProductCard
+                product={product}
+                translate={translateXReverseMobile}
+                key={product.title}
+                isMobile={true}
+                theme={theme}
+              />
+            ))}
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -236,8 +232,8 @@ const HeroParallaxWithProfile = ({
 // Header modificado con imagen de perfil
 const HeaderWithProfile = ({ profileImage, theme }: { profileImage: string, theme: 'dark' | 'light' }) => {
   return (
-    <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-10">
+    <div className="max-w-7xl mx-auto px-4 w-full absolute top-20 left-0 right-0 z-10">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-10 py-20">
         <div className="w-full md:w-3/5 text-center md:text-left">
           <h1 className={`text-4xl md:text-7xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Desarrollador Full Stack <br /> & Especialista en IA
@@ -249,8 +245,6 @@ const HeaderWithProfile = ({ profileImage, theme }: { profileImage: string, them
           }`}>
             6 años de experiencia creando soluciones digitales innovadoras. Especializado en Python, React y desarrollo de aplicaciones potenciadas con IA para crear productos de impacto real.
           </p>
-          
- 
         </div>
 
         <div className="w-full md:w-2/5 flex justify-center md:justify-end mt-8 md:mt-0">
@@ -279,7 +273,6 @@ const HeaderWithProfile = ({ profileImage, theme }: { profileImage: string, them
           </motion.div>
         </div>
       </div>
-      
     </div>
   );
 };
@@ -313,19 +306,16 @@ const ProductCard = ({
         isMobile ? "h-[250px] w-[20rem]" : "h-[450px] w-[35rem]"
       }`}
     >
-      <a
-        href={product.link}
+      <div
         className={`block group-hover/product:shadow-2xl w-full h-full rounded-xl overflow-hidden relative ${
           theme === 'light' ? 'hover-card' : ''
         }`}
-        target="_blank"
-        rel="noopener noreferrer"
       >
         {/* Marco con difuminado de colores */}
         <div className={`absolute inset-0 ${
           theme === 'dark'
-            ? 'bg-gradient-to-br from-fuchsia-600/90 via-cyan-500/80 to-lime-500/90 rounded-xl p-1 shadow-[0_0_25px_rgba(255,0,255,0.7)] animate-pulse'
-            : 'bg-gradient-to-br from-fuchsia-500/70 via-cyan-400/60 to-lime-400/70 rounded-xl p-1 shadow-[0_0_20px_rgba(100,170,255,0.5)]'
+            ? 'bg-gradient-to-br from-fuchsia-600/90 via-cyan-500/80 to-lime-500/90 rounded-xl p-3 shadow-[0_0_25px_rgba(255,0,255,0.7)] animate-pulse'
+            : 'bg-gradient-to-br from-fuchsia-500/70 via-cyan-400/60 to-lime-400/70 rounded-xl p-3 shadow-[0_0_20px_rgba(100,170,255,0.5)]'
         }`}>
           {/* Fondo para la imagen */}
           <div className={`absolute inset-0 ${
@@ -336,7 +326,7 @@ const ProductCard = ({
         </div>
         
         {/* Imagen dentro del marco */}
-        <div className="absolute inset-1 rounded-lg overflow-hidden">
+        <div className="absolute inset-3 rounded-lg overflow-hidden">
           <img
             src={product.thumbnail}
             className="object-cover object-left-top h-full w-full rounded-lg transition-transform duration-500 group-hover/product:scale-110"
@@ -345,12 +335,12 @@ const ProductCard = ({
         </div>
         
         {/* Overlay al hacer hover */}
-        <div className={`absolute inset-1 h-[calc(100%-0.5rem)] w-[calc(100%-0.5rem)] opacity-0 group-hover/product:opacity-90 ${
+        <div className={`absolute inset-3 h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] opacity-0 group-hover/product:opacity-90 ${
           theme === 'dark' 
             ? 'bg-black' 
             : 'bg-white/95 backdrop-blur-md'
         } pointer-events-none rounded-lg transition-opacity duration-300`}></div>
-      </a>
+      </div>
       <h2 className={`absolute bottom-8 left-8 opacity-0 group-hover/product:opacity-100 ${
         theme === 'dark' 
           ? 'text-white font-bold' 

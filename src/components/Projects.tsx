@@ -228,7 +228,7 @@ export function Projects() {
 
   return (
     <section 
-      className={`relative mt-[135vh] py-20 px-4 md:px-6 ${
+      className={`relative py-20 px-4 md:px-6 ${
         theme === 'dark'
           ? 'bg-gradient-to-b from-black via-black to-gray-900'
           : 'bg-gradient-to-b from-white via-white to-gray-100'

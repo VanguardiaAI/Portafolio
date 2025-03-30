@@ -472,3 +472,13 @@ canvas {
   pointer-events: none;
 }
 
+/* Clase importante para sobrescribir estilos de tema para botones */
+.important-purple {
+  background-color: #9333ea !important;
+  background-image: none !important;
+}
+
+.important-purple:hover {
+  background-color: #7e22ce !important;
+}
+
